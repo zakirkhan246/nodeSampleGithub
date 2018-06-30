@@ -1,0 +1,31 @@
+<% include head_partial.ejs %>
+	<body>
+		<% if (!user) { %>
+			<h5>Welcome! Please <a href="/login">log in</a>.</h5>
+		<% } else { %>
+			<h5>List of repositories for <%= user.username %></h5>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Name</th>
+						<th>Is Private?</th>
+						<th>URL</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<% for(var i=0; i < user_repos.length; i++) { %>
+						<tr>
+							<th scope="row"><%= i+1 %></th>
+							<td> <a href="/repo/<%= user_repos[i].owner.login %>/<%= user_repos[i].name %>"> <%= user_repos[i].name%> </a> </td>
+							<td><%= user_repos[i].private%></td>
+							<td><%= user_repos[i].html_url%></td>
+						</tr>
+						<tbody>
+					<% } %>
+				</tbody>
+			</table>
+		<% } %>
+	</body>
+<% include footer.ejs %>
