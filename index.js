@@ -3,10 +3,11 @@ var passport = require('passport');
 var request = require('request');
 var GitHubStrategy = require('passport-github').Strategy;
 
+// TODO: Define Secret in ENV and Other vars in constant file
 passport.use(new GitHubStrategy({
     clientID: "361c67f91e6f4ed3c55e",
     clientSecret: "81d17ba3c221b8979d6b189a8f116546f18f83f0",
-    callbackURL: "http://localhost:3001/auth/github/callback"
+    callbackURL: "https://polite-toonie-82551.herokuapp.com/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
     console.log("<< User Authenticated - Profile recieved");
@@ -45,6 +46,7 @@ app.use(passport.session());
 
 
 // Define Authentication routes.
+// TODO: Define API paths in constants
 app.get('/', function(req, res) {
     console.log(">> Trying to Render Home Page");
 
@@ -72,6 +74,8 @@ app.get('/', function(req, res) {
     
 });
 
+
+// TODO: Define API paths in constants
 app.get('/repo/:ownerId/:repoId', function(req, res){
 
 	if( req.user ){
