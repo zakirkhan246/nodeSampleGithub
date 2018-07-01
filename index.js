@@ -133,4 +133,4 @@ app.get('/profile', require('connect-ensure-login').ensureLoggedIn(), function(r
 });
 
 
-app.listen(3001);
+app.listen(process.env.PORT || 3001);
