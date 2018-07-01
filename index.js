@@ -1,13 +1,19 @@
 var express = require('express');
 var passport = require('passport');
 var request = require('request');
+var fs = require("fs");
 var GitHubStrategy = require('passport-github').Strategy;
 
-// TODO: Define Secret in ENV and Other vars in constant file
+// Read Environment Configs
+var envConfigs = JSON.parse(fs.readFileSync('./config/env.json', "utf8"));
+process.env.NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'dev';
+var env = envConfigs[process.env.NODE_ENV];
+
+// Initialize passport GitHib Strategy
 passport.use(new GitHubStrategy({
-    clientID: "361c67f91e6f4ed3c55e",
-    clientSecret: "81d17ba3c221b8979d6b189a8f116546f18f83f0",
-    callbackURL: "https://polite-toonie-82551.herokuapp.com/auth/github/callback"
+    clientID: env.github.clientID,
+    clientSecret: env.github.clientSecret,
+    callbackURL: env.basepath+env.github.callbackURL
   },
   function(accessToken, refreshToken, profile, cb) {
     console.log("<< User Authenticated - Profile recieved");
@@ -136,4 +142,4 @@ app.get('/profile', require('connect-ensure-login').ensureLoggedIn(), function(r
     res.render('profile', { user: req.user });
 });
 
-app.listen(process.env.PORT || 3001);
+app.listen(process.env.PORT || env.port);
