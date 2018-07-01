@@ -132,5 +132,4 @@ app.get('/profile', require('connect-ensure-login').ensureLoggedIn(), function(r
     res.render('profile', { user: req.user });
 });
 
-
 app.listen(process.env.PORT || 3001);
