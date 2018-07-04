@@ -37,8 +37,8 @@ passport.deserializeUser(function(obj, cb) {
 var app = express();
 
 // Configure view engine to render EJS templates.
- app.set('views', __dirname + '/views');
- app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 
 // Use application-level middleware for common functionality, including
 app.use(require('cookie-parser')());
@@ -86,14 +86,14 @@ app.get('/repo/:ownerId/:repoId', function(req, res){
 
 	if( req.user ){
 
-		var optionsRepo = {
+		let optionsRepo = {
 		  url: 'https://api.github.com/repos/'+req.params.ownerId+'/'+req.params.repoId+'?access_token='+req.user.accessToken,
 		  headers: {
 		    'User-Agent': 'request'
 		  }
 		};	
 		
-    	var options = {
+    	let options = {
 		  url: 'https://api.github.com/repos/'+req.params.ownerId+'/'+req.params.repoId+'/stats/participation?access_token='+req.user.accessToken,
 		  headers: {
 		    'User-Agent': 'request'
@@ -113,14 +113,14 @@ app.get('/repo/:ownerId/:repoId', function(req, res){
 				}
 
 				//console.log(JSON.parse(body).all);
+				//console.log(apires.headers)	
 
-				res.render('repository', { user: req.user, user_repo_commits: JSON.parse(body).all, user_repo: JSON.parse(bodyRepo) });
+				let isCached = apires.headers['status']=='200 OK' ? true:false;
+				let user_repo_commits = isCached ? JSON.parse(body).all: {}; 
+				
+				res.render('repository', { isCached: isCached, user: req.user, user_repo_commits: user_repo_commits, user_repo: JSON.parse(bodyRepo) });
 			});
 		});
-
-    	
-
-
     }else{
     	res.render('home', { user: req.user });	
     }

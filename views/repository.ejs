@@ -2,12 +2,16 @@
 <body>
   <h5>Details for <%=user_repo.name%> Repository</h5>  
   <p>Graph below displays week wise commits.
+  <% if(isCached){ %>
   <script><% include commit_chart.ejs %></script>
   <ul class="list-group">
     <li class="list-group-item"><p>Repo Name: <%=user_repo.name%></p></li>
     <li class="list-group-item"><p>Description: <%=user_repo.description%></p></li>
     <li class="list-group-item"><p>Forks: <%=user_repo.forks_count%></p></li>
   </ul> 
+  <% }else{ %>
+  <p>Requested Data Not Available on GitHub. Please <a href="/repo/<%= user_repo.owner.login %>/<%= user_repo.name %>">Retry</a> in a moment</p>
+  <% } %>
 </body>
 <% include footer.ejs %>
 
