@@ -1,17 +1,20 @@
 var request = require('request');
 module.exports = {
-
+    
+    // Render Login Page
 	login: function(req, res){
 	    console.log(">> Logout Page");
 	    res.render('login');
 	},
 
+	// Logout from application
 	logout: function(req, res) {
 		console.log(">> Logging Out");
 	    req.logout(); 
 	    res.redirect('/');
 	},
 
+	// Render home page with repo listing.
     home : function(req, res){
         console.log(">> Home Page");
 	    if( req.user ){
@@ -37,7 +40,8 @@ module.exports = {
 	    }
     },
 
-    list: function(req, res){
+    // Render Repo Details.
+    repoDetails: function(req, res){
     	console.log(">> Listing Page");
     	if( req.user ){
 
@@ -55,6 +59,8 @@ module.exports = {
 			  }
 			};	
 
+			console.log(options);
+
 			request(optionsRepo, (errRepo, apiResRepo, bodyRepo) => {
 				if (errRepo) { 
 					return console.log(errRepo); 
@@ -66,9 +72,6 @@ module.exports = {
 					if (err) { 
 						return console.log(err); 
 					}
-
-					//console.log(JSON.parse(body).all);
-					//console.log(apires.headers)	
 
 					let isCached = apires.headers['status']=='200 OK' ? true:false;
 					let user_repo_commits = isCached ? JSON.parse(body).all: {}; 

@@ -50,95 +50,6 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Import Systme Routes
-var routes = require('./routes');
-app.use('/', routes);
-
-// Define Authentication routes.
-// TODO: Define API paths in constants
-/*app.get('/', function(req, res) {
-    console.log(">> Trying to Render Home Page");
-
-    if( req.user ){
-
-    	var options = {
-		  url: 'https://api.github.com/user/repos?access_token='+req.user.accessToken,
-		  headers: {
-		    'User-Agent': 'request'
-		  }
-		};	
-
-    	request(options, (err, apires, body) => {
-			if (err) { 
-				return console.log(err); 
-			}
-
-			//console.log(JSON.parse(body));
-
-			res.render('home', { user: req.user, user_repos: JSON.parse(body) });
-		});
-    }else{
-    	res.render('home', { user: req.user });	
-    }
-    
-});
-
-
-// TODO: Define API paths in constants
-app.get('/repo/:ownerId/:repoId', function(req, res){
-
-	if( req.user ){
-
-		let optionsRepo = {
-		  url: 'https://api.github.com/repos/'+req.params.ownerId+'/'+req.params.repoId+'?access_token='+req.user.accessToken,
-		  headers: {
-		    'User-Agent': 'request'
-		  }
-		};	
-		
-    	let options = {
-		  url: 'https://api.github.com/repos/'+req.params.ownerId+'/'+req.params.repoId+'/stats/participation?access_token='+req.user.accessToken,
-		  headers: {
-		    'User-Agent': 'request'
-		  }
-		};	
-
-		request(optionsRepo, (errRepo, apiResRepo, bodyRepo) => {
-			if (errRepo) { 
-				return console.log(errRepo); 
-			}
-
-			//console.log(bodyRepo);	
-
-			request(options, (err, apires, body) => {
-				if (err) { 
-					return console.log(err); 
-				}
-
-				//console.log(JSON.parse(body).all);
-				//console.log(apires.headers)	
-
-				let isCached = apires.headers['status']=='200 OK' ? true:false;
-				let user_repo_commits = isCached ? JSON.parse(body).all: {}; 
-				
-				res.render('repository', { isCached: isCached, user: req.user, user_repo_commits: user_repo_commits, user_repo: JSON.parse(bodyRepo) });
-			});
-		});
-    }else{
-    	res.render('home', { user: req.user });	
-    }
-
-});
-
-app.get('/login', function(req, res){
-    res.render('login');
-});
-
-app.get('/logout', function(req, res) {
-    req.logout(); 
-    res.redirect('/');
-}); */
-
 app.get('/login/github', passport.authenticate('github'));
 
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) {
@@ -146,8 +57,9 @@ app.get('/auth/github/callback', passport.authenticate('github', { failureRedire
     res.redirect('/');
 });
 
-/*app.get('/profile', require('connect-ensure-login').ensureLoggedIn(), function(req, res){
-    res.render('profile', { user: req.user });
-});*/
+// Import Systme Routes
+var routes = require('./routes');
+app.use('/', routes);
 
+// Specify the port for the application to run.
 app.listen(process.env.PORT || env.port);
