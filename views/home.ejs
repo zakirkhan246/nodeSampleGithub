@@ -3,6 +3,7 @@
 		<% if (!user) { %>
 			<h5>Welcome! Please <a href="/login">log in</a>.</h5>
 		<% } else { %>
+			<% include nav_bar_partial.ejs %>
 			<h5>List of repositories for <%= user.username %></h5>
 			<table class="table">
 				<thead>

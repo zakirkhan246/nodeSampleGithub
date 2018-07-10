@@ -50,10 +50,13 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Import Systme Routes
+var routes = require('./routes');
+app.use('/', routes);
 
 // Define Authentication routes.
 // TODO: Define API paths in constants
-app.get('/', function(req, res) {
+/*app.get('/', function(req, res) {
     console.log(">> Trying to Render Home Page");
 
     if( req.user ){
@@ -131,6 +134,11 @@ app.get('/login', function(req, res){
     res.render('login');
 });
 
+app.get('/logout', function(req, res) {
+    req.logout(); 
+    res.redirect('/');
+}); */
+
 app.get('/login/github', passport.authenticate('github'));
 
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) {
@@ -138,8 +146,8 @@ app.get('/auth/github/callback', passport.authenticate('github', { failureRedire
     res.redirect('/');
 });
 
-app.get('/profile', require('connect-ensure-login').ensureLoggedIn(), function(req, res){
+/*app.get('/profile', require('connect-ensure-login').ensureLoggedIn(), function(req, res){
     res.render('profile', { user: req.user });
-});
+});*/
 
 app.listen(process.env.PORT || env.port);
